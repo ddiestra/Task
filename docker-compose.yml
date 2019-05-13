@@ -1,0 +1,25 @@
+version: '3'
+services:
+  app:
+    build: ./docker/services/app
+    container_name: "app"
+    ports:
+      - "8080:80"
+    volumes:
+      - ./app:/var/www/html
+    tty: true
+    links:
+      - mysql:mysql
+    depends_on:
+      - mysql
+  mysql:
+    build: ./docker/services/mysql
+    container_name: "mysql"
+    hostname: mysql
+    networks:
+      - default
+    environment:
+      MYSQL_DATABASE: app
+      MYSQL_USER: superuser
+      MYSQL_PASSWORD: superuser
+      MYSQL_ROOT_PASSWORD: root
